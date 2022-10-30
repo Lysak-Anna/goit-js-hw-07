@@ -7,7 +7,7 @@ const markUp = galleryItems.map(item =>
     <img
       class="gallery__image"
       src="${ item.preview }"
-      data-source="${item.original}"
+       data-source="${item.original}"
       alt="${item.description}"
     />
   </a>
@@ -26,57 +26,35 @@ function galleryClickHandler(event) {
   const link = currentImage.parentNode;
   currentImage.src = link.href;
   
-
-
-   const handleClick = () => {
-     if (event.code === 'Escape') {
-        instance.close();
-        
-      }
-  }
-  function addEvent () {
-    document.addEventListener('keydown', handleClick);
-  }
-  
-
   const instance = basicLightbox.create(`
     
      <img src="${currentImage.src}" >
 `)
-  instance.show(addEvent);
+    instance.show(escapeHandler);
   
  
   
-  // function escapeHandler(event) {
-  //   document.addEventListener("keydown", event => {
-  //     if (event.code === 'Escape') {
-  //       instance.close();
-  //       removeEventListener();
-  //     }
-  //     console.log("Keydown: ", event);
-    
-  //   });
-  // }
- 
-  // function removeEventListener(event) {
-   
-  //   document.removeEventListener("keydown", event => {
-    
-  //   });
-  // }
-
+  function escapeHandler(event) {
+    document.addEventListener("keydown", event => {
+      
+      if (event.code === 'Escape') {
+        instance.close(() => {
+             document.removeEventListener('keydown', event => {
+            console.log('delete');
+          });
+         
+    });
+       
+      }
+      
+    });
+  }
+  
 }
 
 
-// function escapeHandler(event) {
-//   document.addEventListener("keydown", event => {
-//     console.log("Keydown: ", event);
-//     instance.close();
-//   });
-// }
+
   
 
-// Додай закриття модального вікна після натискання клавіші Escape.Зроби так, щоб прослуховування клавіатури 
-// було тільки доти, доки відкрите модальне вікно. 
-// Бібліотека basicLightbox містить метод для програмного закриття модального вікна
+
 
