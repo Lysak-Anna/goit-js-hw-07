@@ -19,6 +19,7 @@ gallery.insertAdjacentHTML('beforeend', markUp);
 gallery.addEventListener('click', galleryClickHandler);
 
 function galleryClickHandler(event) {
+  event.preventDefault();
   if (!event.target.classList.contains('gallery__image')) {
     return;
   }
