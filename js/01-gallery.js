@@ -1,6 +1,6 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
-
+const gallery = document.querySelector('.gallery');          
 const markUp = galleryItems.map(item => 
     `<div class="gallery__item">
     <a class="gallery__link" href="${ item.original }">
@@ -9,14 +9,15 @@ const markUp = galleryItems.map(item =>
       src="${ item.preview }"
        data-source="${item.original}"
       alt="${item.description}"
-    />
+    /> 
   </a>
 </div>`).join('');
-const gallery = document.querySelector('.gallery');
+    
 
 gallery.insertAdjacentHTML('beforeend', markUp);
-
 gallery.addEventListener('click', galleryClickHandler);
+
+let instance;
 
 function galleryClickHandler(event) {
   event.preventDefault();
@@ -24,34 +25,37 @@ function galleryClickHandler(event) {
     return;
   }
   const currentImage = event.target;
-  const link = currentImage.parentNode;
-  currentImage.src = link.href;
+  instance = basicLightbox.create(`
+     <img src="${currentImage.dataset.source}" >
+    `);
   
-  const instance = basicLightbox.create(`
-    
-     <img src="${currentImage.src}" >
-`)
-    instance.show(escapeHandler);
-  
+  instance.show(escapeHandler);
  
-  
-  function escapeHandler(event) {
-    document.addEventListener("keydown", event => {
-      
-      if (event.code === 'Escape') {
-        instance.close(() => {
-             document.removeEventListener('keydown', event => {
-            console.log('delete');
-          });
-         
-    });
-       
-      }
-      
-    });
-  }
-  
 }
+
+function escapeHandler(event) {
+  addEvent();
+  if (event.code === 'Escape') {
+    instance.close(removeEvent);
+    
+  }   
+}
+function removeEvent() {
+  window.removeEventListener('keydown', escapeHandler);
+}
+function addEvent() {
+  window.addEventListener('keydown', escapeHandler);
+  window.addEventListener('click', removeEvent);
+}
+
+
+
+
+
+
+
+
+
 
 
 
